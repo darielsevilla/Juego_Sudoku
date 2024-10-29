@@ -1,24 +1,33 @@
-# This is a sample Python script.
-import random
 
 import numpy
-
-
-# Press Mayús+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
-
-import numpy as np
 import random
 
+def validacion(tablero, elemento, fil, col):
 
+    for i in range(9):
+        if(tablero[i][col] == elemento):
+            return False
+
+    for j in range(9):
+        if(tablero[fil][j] == elemento):
+            return False
+
+    for regX in range(3):
+        for regY in range(3):
+            existe = False
+            for i in range(3):
+                for j in range(3):
+                    if(fil >= (regX*3) and fil <= (regX*3) +2 and col >= (regY*3) and col <= (regY*3)+2):
+                        if (tablero[i+(regX*3)][j+(regY*3)] == elemento):
+                            return False
+
+    return True
 
 def distribucion2(tablero):
-    # Buscar la primera celda vacía
     for i in range(9):
         for j in range(9):
-            if tablero[i][j] == 0:  # Celda vacía encontrada
-                # Generar una lista de números del 1 al 9 en orden aleatorio
+            if tablero[i][j] == 0:  
+                
                 numeros = [0,0,0,0,0,0,0,0,0]
                 for num in range(9):
                     numero = random.randint(1,9)
@@ -27,45 +36,15 @@ def distribucion2(tablero):
                     numeros[num] = numero
 
                 for num in numeros:
-                    # Verificar si el número es válido en la posición actual
                     if validacion(tablero, num, i, j):
-                        tablero[i][j] = num  # Colocar el número
+                        tablero[i][j] = num  
 
-                        # Intentar resolver el resto del tablero
                         if distribucion2(tablero):
                             return True
 
-                        # Si no se puede completar, revertir el cambio
                         tablero[i][j] = 0
 
-                # No se encontró solución para esta celda, retroceder
                 return False
-
-    # Si no quedan celdas vacías, el Sudoku está resuelto
-    return True
-
-
-def validacion(tablero, elemento, fil, col):
-    #revisando columna
-
-    for i in range(9):
-        if(tablero[i][col] == elemento):
-            return False
-    #revisando fila
-    for j in range(9):
-        if(tablero[fil][j] == elemento):
-            return False
-
-    for regX in range(3):
-        for regY in range(3):
-            #revisando casillas del cuadrante
-            existe = False
-            for i in range(3):
-                for j in range(3):
-                    if(fil >= (regX*3) and fil <= (regX*3) +2 and col >= (regY*3) and col <= (regY*3)+2):
-                        if (tablero[i+(regX*3)][j+(regY*3)] == elemento):
-                            return False
-
 
     return True
 
@@ -75,7 +54,6 @@ def victoria(tablero2):
             if tablero2[i][j]==0:
                 return False
     return True
-
 
 def printTablero(tablero):
     for i in range(9):
@@ -92,6 +70,7 @@ def printTablero(tablero):
             else:
                 print("[" + str(tablero[i][j]) + "]", end=" ")
         print("")
+
 def ocultar(tablero, tablero2):
     contador=0
     while contador < 20:
@@ -126,7 +105,6 @@ def sudoku():
             fila = int(input("Fila: "))
             columna = int(input("Columna: "))
             if(fila >= 0 and fila <= 8 and columna >= 0 or columna <= 8):
-                #printTablero(tablero)
                 if validacion(tablero2, numero, fila, columna):
                     print("Numero Valido")
                     tablero2[fila][columna]=numero
@@ -145,9 +123,5 @@ def sudoku():
     else:
         print("Ha perdido")
 
-
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     sudoku()
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
